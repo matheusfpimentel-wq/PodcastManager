@@ -208,7 +208,9 @@ Chave-valor global. `ppm` (default 150), `duracao_alvo_min` (50), `host_default_
 2. ~~**Cofre de credenciais.**~~ ✅ **Decidido: fora da v1.**
 3. **`genero`** em `pessoas`: enum leve com "não informado" (proposto) ou texto livre?
 4. **`citacoes.tipo`**: texto com sugestões (proposto) ou tabela de taxonomia dedicada?
-5. **RLS:** `owner_id = auth.uid()` por linha (proposto) ou simplesmente
-   "authenticated-only" já que é usuário único?
+5. ~~**RLS:** owner_id por linha vs. authenticated-only.~~ ✅ **Decidido: authenticated-only**
+   (`to authenticated using (true)`, anônimo bloqueado). Igualmente seguro para 1
+   usuário e evita atrito de posse no seed; migrar para owner_id é aditivo. Se você
+   preferir owner_id por linha, me avise que troco antes de aplicar no banco.
 6. Algum campo do "Controle" ou do "AT MEMBROS" que **não** aparece acima e você
    quer preservar? (Verei ao receber os arquivos.)
