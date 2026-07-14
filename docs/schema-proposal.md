@@ -195,22 +195,19 @@ Chave-valor global. `ppm` (default 150), `duracao_alvo_min` (50), `host_default_
 `regra_convidado_repetido` (`alertar`\|`bloquear`, default `alertar`),
 `dias_parado_alerta` (N), `links_institucionais` JSONB, `definicao_campos_extras` JSONB.
 
-### `vault_items` *(apenas se você mantiver o cofre — §6.9)*
-**Recomendação registrada:** não construir cofre de senhas dentro do app; um
-gerenciador dedicado (Bitwarden/1Password) é mais seguro. Se mantido: zero-knowledge
-(cripto **só no client**, AES-GCM, chave via PBKDF2/Argon2id); servidor guarda
-**apenas ciphertext**. `id`, `titulo`, `ciphertext`, `iv`, `salt`, `atualizado_em`.
+### ~~`vault_items` — cofre de credenciais~~ *(FORA da v1 — decidido)*
+**Decisão:** o cofre **não** entra na v1; usar um gerenciador dedicado
+(Bitwarden/1Password). Fácil de acrescentar depois, sem impacto no restante do schema.
 
 ---
 
 ## Decisões que preciso confirmar com você
 
-1. **Supabase:** criar um **projeto novo dedicado** a este sistema (recomendo) ou
-   usar um dos existentes? (Os dois atuais já têm outro conteúdo.)
-2. **`genero`** em `pessoas`: enum leve com "não informado" (proposto) ou texto livre?
-3. **`citacoes.tipo`**: texto com sugestões (proposto) ou tabela de taxonomia dedicada?
-4. **Cofre de credenciais:** mantém no escopo v1 ou seguimos a recomendação de deixar
-   de fora?
+1. ~~**Supabase:** projeto novo vs. existente.~~ ✅ **Decidido: projeto novo dedicado.**
+   Será criado como primeiro passo da Fase 1 (após aprovação do schema + arquivos).
+2. ~~**Cofre de credenciais.**~~ ✅ **Decidido: fora da v1.**
+3. **`genero`** em `pessoas`: enum leve com "não informado" (proposto) ou texto livre?
+4. **`citacoes.tipo`**: texto com sugestões (proposto) ou tabela de taxonomia dedicada?
 5. **RLS:** `owner_id = auth.uid()` por linha (proposto) ou simplesmente
    "authenticated-only" já que é usuário único?
 6. Algum campo do "Controle" ou do "AT MEMBROS" que **não** aparece acima e você
