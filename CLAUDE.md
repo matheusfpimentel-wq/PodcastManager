@@ -46,10 +46,13 @@ para Tauri + SQLite sem reescrever regras de negócio.
 
 Dados pessoais de membros do MP são tratados como requisito, não sugestão.
 
-- **A base "AT MEMBROS" não sobe para a nuvem.** É carregada e processada **no
-  client** (PapaParse/SheetJS → IndexedDB) apenas para busca/autocomplete. Só as
-  pessoas **efetivamente vinculadas** a um episódio são persistidas no Supabase.
-  Botão "Atualizar base" recarrega o arquivo quando houver versão nova.
+- **AT MEMBROS — decisão (2026-07-16):** o usuário optou por **não** ter o
+  autocomplete client-side (IndexedDB). Em vez disso, membros serão **importados
+  sob demanda** para `pessoas` via o importador (preset "Pessoas", a construir),
+  reaproveitando o wizard existente. ⚠️ Isso persiste dados pessoais na nuvem —
+  tradeoff aceito; manter os demais guarda-corpos (RLS, sem PII em log, anonimizar
+  ao excluir, export só por ação explícita) e importar **apenas o necessário**.
+  `.gitignore` continua bloqueando planilhas `*at-membros*` (nunca commitar).
 - Telefones e e-mails **nunca** aparecem em logs de aplicação ou mensagens de erro.
 - Exportação de dados pessoais só por **ação explícita** do usuário.
 - "Excluir pessoa" oferece **anonimizar participações antigas** preservando
@@ -125,8 +128,8 @@ rodam normalmente.
    proposta de schema. ✅
 1. **Fundação de dados:** schema + migrations + seed, auth, CRM de pessoas,
    importador com presets, Kanban com checklists. ✅ (projeto Supabase
-   `julgados-e-comentados`, sa-east-1). Falta: conteúdo real (§9) + preset
-   AT MEMBROS client-side.
+   `julgados-e-comentados`, sa-east-1). Falta: conteúdo real (§9). Preset
+   "Pessoas" no importador é opcional/sob demanda (ver decisão AT MEMBROS).
 2. **Roteiro:** templates versionados, editor, citações, import/export Markdown,
    PDF, modo gravação.
 3. **Comunicação:** modelos, geração em um clique, log, lembretes, tela "Hoje".
