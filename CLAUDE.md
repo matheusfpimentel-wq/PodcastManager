@@ -116,15 +116,17 @@ rodam normalmente.
 
 1. Renderização de variáveis de mensagem, **incluindo variável ausente** ✅ (`renderTemplate.test.ts`)
 2. Parser Markdown↔template do roteiro (**round-trip**) — fase 2
-3. Mapeamento e **deduplicação** de import — fase 1
+3. Mapeamento e **deduplicação** de import ✅ (`planImport.test.ts` + `coerce.test.ts`)
 4. **Imutabilidade** de versões de template frente a edições — fase 2
 
 ## Fases de entrega (cada fase termina utilizável)
 
-0. **Fundação (atual):** scaffold, toolchain, domínio de mensagens, CLAUDE.md,
-   proposta de schema. Sem migrations ainda.
-1. **Fundação de dados:** schema aprovado + migrations + seed, auth, CRM de
-   pessoas, importador com presets, Kanban básico com checklists.
+0. **Fundação:** scaffold, toolchain, domínio de mensagens, CLAUDE.md,
+   proposta de schema. ✅
+1. **Fundação de dados:** schema + migrations + seed, auth, CRM de pessoas,
+   importador com presets, Kanban com checklists. ✅ (projeto Supabase
+   `julgados-e-comentados`, sa-east-1). Falta: conteúdo real (§9) + preset
+   AT MEMBROS client-side.
 2. **Roteiro:** templates versionados, editor, citações, import/export Markdown,
    PDF, modo gravação.
 3. **Comunicação:** modelos, geração em um clique, log, lembretes, tela "Hoje".
