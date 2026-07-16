@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { AuthProvider, useAuth } from '@/auth/AuthProvider'
 import { LoginPage } from '@/auth/LoginPage'
 import { PessoasPage } from '@/pages/PessoasPage'
+import { KanbanPage } from '@/pages/KanbanPage'
 
 const NAV = [
   { to: '/hoje', label: 'Hoje' },
@@ -66,7 +67,7 @@ function Shell() {
         <Routes>
           <Route path="/" element={<Navigate to="/hoje" replace />} />
           <Route path="/hoje" element={<Placeholder title="Hoje" />} />
-          <Route path="/kanban" element={<Placeholder title="Pipeline de produção" />} />
+          <Route path="/kanban" element={<KanbanPage />} />
           <Route path="/pessoas" element={<PessoasPage />} />
           <Route path="/episodios" element={<Placeholder title="Episódios" />} />
           <Route path="/acervo" element={<Placeholder title="Acervo pesquisável" />} />

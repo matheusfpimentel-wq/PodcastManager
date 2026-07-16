@@ -536,6 +536,10 @@ export type Database = {
     }
     Functions: {
       apply_standard_policies: { Args: { tbl: unknown }; Returns: undefined }
+      move_episode_to_stage: {
+        Args: { p_episode: string; p_stage: string }
+        Returns: undefined
+      }
       pessoa_tsv: {
         Args: {
           cargo: string
