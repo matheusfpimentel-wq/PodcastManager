@@ -29,6 +29,32 @@ end;
 $$;
 
 -- Helper: aplica RLS "authenticated-only" e trigger de updated_at a uma tabela.
+-- Wrapper IMMUTABLE para full-text pt-BR. O cast text->regconfig faz lookup no
+-- catálogo (stable), então to_tsvector('portuguese', ...) não pode ser usado
+-- direto numa coluna gerada. Fixar a config aqui é genuinamente imutável.
+create or replace function public.pt_tsv(txt text)
+returns tsvector
+language sql
+immutable
+strict
+as $$
+  select to_tsvector('portuguese'::regconfig, txt);
+$$;
+
+-- tsvector de pessoa. Encapsula array_to_string (marcado STABLE no catálogo, mas
+-- determinístico para text[]) para que a coluna gerada seja considerada imutável.
+create or replace function public.pessoa_tsv(
+  nome text, cargo text, comarca text, tags text[], notas text)
+returns tsvector
+language sql
+immutable
+as $$
+  select to_tsvector('portuguese'::regconfig,
+    coalesce(nome,'') || ' ' || coalesce(cargo,'') || ' ' ||
+    coalesce(comarca,'') || ' ' || coalesce(array_to_string(tags,' '),'') || ' ' ||
+    coalesce(notas,''));
+$$;
+
 create or replace function public.apply_standard_policies(tbl regclass)
 returns void
 language plpgsql
@@ -108,10 +134,7 @@ create table if not exists public.pessoas (
   campos_extras     jsonb not null default '{}'::jsonb,
   anonimizada       boolean not null default false,
   search_tsv        tsvector generated always as (
-    to_tsvector('portuguese',
-      coalesce(nome,'') || ' ' || coalesce(cargo_atual,'') || ' ' ||
-      coalesce(comarca_lotacao,'') || ' ' || coalesce(array_to_string(tags,' '),'') || ' ' ||
-      coalesce(notas,''))
+    public.pessoa_tsv(nome, cargo_atual, comarca_lotacao, tags, notas)
   ) stored,
   created_at        timestamptz not null default now(),
   updated_at        timestamptz not null default now()
@@ -137,7 +160,7 @@ create table if not exists public.episodios (
   notas             text,
   campos_extras     jsonb not null default '{}'::jsonb,
   search_tsv        tsvector generated always as (
-    to_tsvector('portuguese', coalesce(titulo,'') || ' ' || coalesce(tema,''))
+    public.pt_tsv(coalesce(titulo,'') || ' ' || coalesce(tema,''))
   ) stored,
   created_at        timestamptz not null default now(),
   updated_at        timestamptz not null default now()
