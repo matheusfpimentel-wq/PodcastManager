@@ -111,6 +111,59 @@ export type Database = {
           },
         ]
       }
+      citacoes: {
+        Row: {
+          created_at: string
+          data: string | null
+          episodio_id: string
+          fonte_url: string | null
+          id: string
+          identificador: string | null
+          o_que_fixou: string | null
+          orgao: string | null
+          search_tsv: unknown
+          status_verificacao: string
+          tipo: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: string | null
+          episodio_id: string
+          fonte_url?: string | null
+          id?: string
+          identificador?: string | null
+          o_que_fixou?: string | null
+          orgao?: string | null
+          search_tsv?: unknown
+          status_verificacao?: string
+          tipo?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: string | null
+          episodio_id?: string
+          fonte_url?: string | null
+          id?: string
+          identificador?: string | null
+          o_que_fixou?: string | null
+          orgao?: string | null
+          search_tsv?: unknown
+          status_verificacao?: string
+          tipo?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "citacoes_episodio_id_fkey"
+            columns: ["episodio_id"]
+            isOneToOne: false
+            referencedRelation: "episodios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       eixos_tematicos: {
         Row: {
           ativo: boolean
@@ -225,6 +278,74 @@ export type Database = {
             columns: ["version_id"]
             isOneToOne: false
             referencedRelation: "checklist_template_versions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      episode_script_revisions: {
+        Row: {
+          conteudo: Json
+          criada_em: string
+          episode_script_id: string
+          id: string
+        }
+        Insert: {
+          conteudo: Json
+          criada_em?: string
+          episode_script_id: string
+          id?: string
+        }
+        Update: {
+          conteudo?: Json
+          criada_em?: string
+          episode_script_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episode_script_revisions_episode_script_id_fkey"
+            columns: ["episode_script_id"]
+            isOneToOne: false
+            referencedRelation: "episode_scripts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      episode_scripts: {
+        Row: {
+          atualizado_em: string
+          conteudo: Json
+          episodio_id: string
+          id: string
+          template_version_id: string
+        }
+        Insert: {
+          atualizado_em?: string
+          conteudo?: Json
+          episodio_id: string
+          id?: string
+          template_version_id: string
+        }
+        Update: {
+          atualizado_em?: string
+          conteudo?: Json
+          episodio_id?: string
+          id?: string
+          template_version_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episode_scripts_episodio_id_fkey"
+            columns: ["episodio_id"]
+            isOneToOne: true
+            referencedRelation: "episodios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "episode_scripts_template_version_id_fkey"
+            columns: ["template_version_id"]
+            isOneToOne: false
+            referencedRelation: "script_template_versions"
             referencedColumns: ["id"]
           },
         ]
@@ -469,6 +590,65 @@ export type Database = {
           id?: string
           nome?: string
           ordem?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      script_template_versions: {
+        Row: {
+          criada_em: string
+          estrutura: Json
+          id: string
+          template_id: string
+          versao: number
+        }
+        Insert: {
+          criada_em?: string
+          estrutura: Json
+          id?: string
+          template_id: string
+          versao: number
+        }
+        Update: {
+          criada_em?: string
+          estrutura?: Json
+          id?: string
+          template_id?: string
+          versao?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "script_template_versions_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "script_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      script_templates: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          descricao: string | null
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome?: string
           updated_at?: string
         }
         Relationships: []
