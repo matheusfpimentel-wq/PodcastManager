@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -5,6 +6,11 @@ import { AuthProvider, useAuth } from '@/auth/AuthProvider'
 import { LoginPage } from '@/auth/LoginPage'
 import { PessoasPage } from '@/pages/PessoasPage'
 import { KanbanPage } from '@/pages/KanbanPage'
+
+// Importação carrega SheetJS/PapaParse — code-split para não pesar o bundle inicial.
+const ImportarPage = lazy(() =>
+  import('@/pages/ImportarPage').then((m) => ({ default: m.ImportarPage })),
+)
 
 const NAV = [
   { to: '/hoje', label: 'Hoje' },
@@ -72,7 +78,16 @@ function Shell() {
           <Route path="/episodios" element={<Placeholder title="Episódios" />} />
           <Route path="/acervo" element={<Placeholder title="Acervo pesquisável" />} />
           <Route path="/metricas" element={<Placeholder title="Métricas" />} />
-          <Route path="/importar" element={<Placeholder title="Importação" />} />
+          <Route
+            path="/importar"
+            element={
+              <Suspense
+                fallback={<p className="text-sm text-muted-foreground">Carregando importador…</p>}
+              >
+                <ImportarPage />
+              </Suspense>
+            }
+          />
           <Route path="/config" element={<Placeholder title="Configurações" />} />
           <Route path="*" element={<Placeholder title="Página não encontrada" />} />
         </Routes>
