@@ -11,6 +11,13 @@ const queryClient = new QueryClient({
   },
 })
 
+// PWA: registra o service worker (instalável + cache de shell). Silencioso em erro.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {})
+  })
+}
+
 const rootEl = document.getElementById('root')
 if (!rootEl) throw new Error('Root element #root not found')
 
