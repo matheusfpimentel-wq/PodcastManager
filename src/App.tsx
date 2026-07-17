@@ -6,6 +6,8 @@ import { AuthProvider, useAuth } from '@/auth/AuthProvider'
 import { LoginPage } from '@/auth/LoginPage'
 import { PessoasPage } from '@/pages/PessoasPage'
 import { KanbanPage } from '@/pages/KanbanPage'
+import { EpisodiosPage } from '@/pages/EpisodiosPage'
+import { EpisodioRoteiroPage } from '@/pages/EpisodioRoteiroPage'
 
 // Importação carrega SheetJS/PapaParse — code-split para não pesar o bundle inicial.
 const ImportarPage = lazy(() =>
@@ -38,7 +40,7 @@ function Shell() {
   const { signOut, session } = useAuth()
   return (
     <div className="min-h-dvh bg-background text-foreground">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur">
+      <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur print:hidden">
         <div className="container flex h-14 items-center gap-6">
           <span className="font-semibold tracking-tight">Julgados e Comentados</span>
           <nav className="flex items-center gap-1 overflow-x-auto">
@@ -75,7 +77,8 @@ function Shell() {
           <Route path="/hoje" element={<Placeholder title="Hoje" />} />
           <Route path="/kanban" element={<KanbanPage />} />
           <Route path="/pessoas" element={<PessoasPage />} />
-          <Route path="/episodios" element={<Placeholder title="Episódios" />} />
+          <Route path="/episodios" element={<EpisodiosPage />} />
+          <Route path="/episodios/:id" element={<EpisodioRoteiroPage />} />
           <Route path="/acervo" element={<Placeholder title="Acervo pesquisável" />} />
           <Route path="/metricas" element={<Placeholder title="Métricas" />} />
           <Route

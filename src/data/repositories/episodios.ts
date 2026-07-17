@@ -79,6 +79,24 @@ export async function moveToStage(episodeId: string, stageId: string): Promise<v
   if (error) throw new Error(`Falha ao mover etapa: ${error.message}`)
 }
 
+export interface EpisodioHeader {
+  id: string
+  numero: number | null
+  titulo: string | null
+  tema: string | null
+}
+
+export async function getEpisodioHeader(id: string): Promise<EpisodioHeader | null> {
+  const sb = getSupabase()
+  const { data, error } = await sb
+    .from('episodios')
+    .select('id, numero, titulo, tema')
+    .eq('id', id)
+    .maybeSingle()
+  if (error) throw new Error(`Falha ao carregar episódio: ${error.message}`)
+  return data
+}
+
 export async function deleteEpisodio(id: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('episodios').delete().eq('id', id)
