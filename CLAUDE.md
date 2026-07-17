@@ -138,7 +138,9 @@ rodam normalmente.
    exports CSV/PDF, relatório executivo. ✅ core (schema 0007; import Spotify;
    3 widgets seed; CSV + PDF). Falta: métrica "tempo médio por etapa"
    (stage_history) e relatório executivo consolidado.
-5. **Extras:** divulgação por episódio, cofre (se mantido), polimento, PWA.
+5. **Extras:** divulgação por episódio ✅, acervo pesquisável ✅, config completa
+   (etapas/checklists/eixos) ✅, PWA instalável ✅. Falta: métrica tempo médio de
+   produção, relatório executivo consolidado, tela de settings gerais, deploy Vercel.
 
 ## Processo (§9 do brief) — seguir à risca
 
