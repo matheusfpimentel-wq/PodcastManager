@@ -18,6 +18,23 @@ if ('serviceWorker' in navigator) {
   })
 }
 
+// Desktop (Tauri): abre links externos (wa.me, mailto, http) no navegador do
+// sistema em vez de dentro da webview. Só ativa quando rodando sob Tauri.
+if (typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window) {
+  import('@tauri-apps/plugin-opener')
+    .then(({ openUrl }) => {
+      const nativeOpen = window.open.bind(window)
+      window.open = ((url?: string | URL) => {
+        if (url) {
+          void openUrl(String(url)).catch(() => nativeOpen(url as string))
+          return null
+        }
+        return nativeOpen()
+      }) as typeof window.open
+    })
+    .catch(() => {})
+}
+
 const rootEl = document.getElementById('root')
 if (!rootEl) throw new Error('Root element #root not found')
 
