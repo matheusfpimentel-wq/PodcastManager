@@ -8,6 +8,7 @@ import { PessoasPage } from '@/pages/PessoasPage'
 import { KanbanPage } from '@/pages/KanbanPage'
 import { EpisodiosPage } from '@/pages/EpisodiosPage'
 import { EpisodioRoteiroPage } from '@/pages/EpisodioRoteiroPage'
+import { ConfigPage } from '@/pages/ConfigPage'
 
 // Importação carrega SheetJS/PapaParse — code-split para não pesar o bundle inicial.
 const ImportarPage = lazy(() =>
@@ -91,7 +92,7 @@ function Shell() {
               </Suspense>
             }
           />
-          <Route path="/config" element={<Placeholder title="Configurações" />} />
+          <Route path="/config" element={<ConfigPage />} />
           <Route path="*" element={<Placeholder title="Página não encontrada" />} />
         </Routes>
       </main>

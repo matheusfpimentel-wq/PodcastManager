@@ -26,6 +26,7 @@ import type {
   TextoContent,
 } from '@/domain/script/types'
 import { CitacoesTab } from './roteiro/CitacoesTab'
+import { RecordingMode } from './roteiro/RecordingMode'
 
 function fmtTempo(seg: number): string {
   const m = Math.floor(seg / 60)
@@ -52,6 +53,7 @@ function EditorRoteiro({
   const [importOpen, setImportOpen] = useState(false)
   const [importText, setImportText] = useState('')
   const [importReport, setImportReport] = useState<string[] | null>(null)
+  const [gravacao, setGravacao] = useState(false)
   const dirty = useRef(false)
 
   const settings = useQuery({
@@ -134,6 +136,9 @@ function EditorRoteiro({
           </Button>
           <Button variant="outline" size="sm" onClick={() => window.print()}>
             PDF / imprimir
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => setGravacao(true)}>
+            Modo gravação
           </Button>
           <Button size="sm" onClick={() => save.mutate(content)}>
             Salvar
@@ -294,6 +299,10 @@ function EditorRoteiro({
             </div>
           </div>
         </div>
+      )}
+
+      {gravacao && (
+        <RecordingMode estrutura={estrutura} content={content} onClose={() => setGravacao(false)} />
       )}
     </div>
   )
