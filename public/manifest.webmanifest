@@ -1,0 +1,18 @@
+{
+  "name": "Julgados e Comentados — Produção",
+  "short_name": "Julgados",
+  "description": "Gestão de produção do podcast Julgados e Comentados (ESMP-PR/MPPR)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

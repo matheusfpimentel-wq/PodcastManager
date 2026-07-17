@@ -1,0 +1,49 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build output
+dist
+dist-ssr
+*.local
+.vite
+
+# Environment — never commit real secrets or personal data files
+.env
+.env.local
+.env.*.local
+
+# Personal / sensitive data files (LGPD — see CLAUDE.md §privacy)
+# AT MEMBROS and other member directories must never be committed.
+*at-membros*
+*AT-MEMBROS*
+*AT_MEMBROS*
+/data/private/
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing
+coverage
+
+# TS build artifacts (composite project emits these)
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
