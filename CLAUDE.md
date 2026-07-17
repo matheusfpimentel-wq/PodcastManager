@@ -135,7 +135,9 @@ rodam normalmente.
 3. **Comunicação:** modelos, geração em um clique, log, lembretes, tela "Hoje". ✅
    (schema 0006; Modelos 1–4 como skeleton — colar texto oficial pela UI)
 4. **Métricas:** imports de analytics, motor métrica × dimensão, widgets seed,
-   exports CSV/PDF, relatório executivo.
+   exports CSV/PDF, relatório executivo. ✅ core (schema 0007; import Spotify;
+   3 widgets seed; CSV + PDF). Falta: métrica "tempo médio por etapa"
+   (stage_history) e relatório executivo consolidado.
 5. **Extras:** divulgação por episódio, cofre (se mantido), polimento, PWA.
 
 ## Processo (§9 do brief) — seguir à risca
