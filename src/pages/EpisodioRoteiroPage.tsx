@@ -27,6 +27,7 @@ import type {
 } from '@/domain/script/types'
 import { CitacoesTab } from './roteiro/CitacoesTab'
 import { RecordingMode } from './roteiro/RecordingMode'
+import { DadosTab } from './episodio/DadosTab'
 
 function fmtTempo(seg: number): string {
   const m = Math.floor(seg / 60)
@@ -311,7 +312,7 @@ function EditorRoteiro({
 export function EpisodioRoteiroPage() {
   const { id = '' } = useParams()
   const qc = useQueryClient()
-  const [tab, setTab] = useState<'roteiro' | 'citacoes'>('roteiro')
+  const [tab, setTab] = useState<'dados' | 'roteiro' | 'citacoes'>('roteiro')
 
   const header = useQuery({ queryKey: ['episodio-header', id], queryFn: () => getEpisodioHeader(id) })
   const script = useQuery({ queryKey: ['episode-script', id], queryFn: () => getEpisodeScript(id) })
@@ -353,6 +354,9 @@ export function EpisodioRoteiroPage() {
       </div>
 
       <div className="mb-4 flex gap-1 print:hidden">
+        <Button variant={tab === 'dados' ? 'default' : 'ghost'} size="sm" onClick={() => setTab('dados')}>
+          Dados
+        </Button>
         <Button variant={tab === 'roteiro' ? 'default' : 'ghost'} size="sm" onClick={() => setTab('roteiro')}>
           Roteiro
         </Button>
@@ -361,7 +365,9 @@ export function EpisodioRoteiroPage() {
         </Button>
       </div>
 
-      {tab === 'citacoes' ? (
+      {tab === 'dados' ? (
+        <DadosTab episodeId={id} />
+      ) : tab === 'citacoes' ? (
         <CitacoesTab episodeId={id} />
       ) : script.isLoading ? (
         <p className="text-sm text-muted-foreground">Carregando roteiro…</p>

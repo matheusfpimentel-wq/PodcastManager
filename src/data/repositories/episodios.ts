@@ -103,6 +103,35 @@ export async function deleteEpisodio(id: string): Promise<void> {
   if (error) throw new Error(`Falha ao excluir episódio: ${error.message}`)
 }
 
+export interface EpisodioEdit {
+  id: string
+  numero: number | null
+  titulo: string | null
+  tema: string | null
+  eixo_id: string | null
+  host_id: string | null
+  data_gravacao: string | null
+  data_lancamento: string | null
+  duracao_seg: number | null
+  links: Record<string, unknown>
+  notas: string | null
+}
+
+export async function getEpisodioEdit(id: string): Promise<EpisodioEdit | null> {
+  const sb = getSupabase()
+  const { data, error } = await sb
+    .from('episodios')
+    .select('id, numero, titulo, tema, eixo_id, host_id, data_gravacao, data_lancamento, duracao_seg, links, notas')
+    .eq('id', id)
+    .maybeSingle()
+  if (error) throw new Error(`Falha ao carregar episódio: ${error.message}`)
+  if (!data) return null
+  return {
+    ...data,
+    links: (data.links && typeof data.links === 'object' ? data.links : {}) as Record<string, unknown>,
+  }
+}
+
 export interface EpisodeWithDates {
   id: string
   numero: number | null
