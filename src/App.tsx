@@ -11,6 +11,7 @@ import { EpisodioRoteiroPage } from '@/pages/EpisodioRoteiroPage'
 import { ConfigPage } from '@/pages/ConfigPage'
 import { ComunicacaoPage } from '@/pages/ComunicacaoPage'
 import { HojePage } from '@/pages/HojePage'
+import { AcervoPage } from '@/pages/AcervoPage'
 
 // Importação (SheetJS) e Métricas (Recharts) são pesadas — code-split.
 const ImportarPage = lazy(() =>
@@ -87,7 +88,7 @@ function Shell() {
           <Route path="/episodios" element={<EpisodiosPage />} />
           <Route path="/episodios/:id" element={<EpisodioRoteiroPage />} />
           <Route path="/comunicacao" element={<ComunicacaoPage />} />
-          <Route path="/acervo" element={<Placeholder title="Acervo pesquisável" />} />
+          <Route path="/acervo" element={<AcervoPage />} />
           <Route
             path="/metricas"
             element={

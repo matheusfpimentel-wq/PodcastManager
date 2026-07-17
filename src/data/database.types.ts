@@ -375,6 +375,47 @@ export type Database = {
           },
         ]
       }
+      episode_promo: {
+        Row: {
+          episodio_id: string
+          instagram: string
+          site_mppr: string
+          spotify: string
+          status: Json
+          updated_at: string
+          whatsapp: string
+          youtube: string
+        }
+        Insert: {
+          episodio_id: string
+          instagram?: string
+          site_mppr?: string
+          spotify?: string
+          status?: Json
+          updated_at?: string
+          whatsapp?: string
+          youtube?: string
+        }
+        Update: {
+          episodio_id?: string
+          instagram?: string
+          site_mppr?: string
+          spotify?: string
+          status?: Json
+          updated_at?: string
+          whatsapp?: string
+          youtube?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episode_promo_episodio_id_fkey"
+            columns: ["episodio_id"]
+            isOneToOne: true
+            referencedRelation: "episodios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       episode_script_revisions: {
         Row: {
           conteudo: Json
