@@ -1,6 +1,88 @@
 import { getSupabase } from '@/lib/supabase'
+import { nextVersionNumber } from '@/domain/script/version'
 
 /** Repositório de checklists instanciados por episódio+etapa. */
+
+export interface ChecklistTemplateHead {
+  id: string
+  stage_id: string | null
+  nome: string
+}
+
+export async function listChecklistTemplates(): Promise<ChecklistTemplateHead[]> {
+  const sb = getSupabase()
+  const { data, error } = await sb
+    .from('checklist_templates')
+    .select('id, stage_id, nome')
+    .eq('ativo', true)
+    .order('nome', { ascending: true })
+  if (error) throw new Error(`Falha ao listar checklists: ${error.message}`)
+  return data ?? []
+}
+
+export interface ChecklistItemEdit {
+  label: string
+  ordem: number
+  obrigatorio: boolean
+}
+export interface ChecklistVersionEdit {
+  versionId: string
+  versao: number
+  items: ChecklistItemEdit[]
+}
+
+export async function getLatestChecklistVersion(
+  templateId: string,
+): Promise<ChecklistVersionEdit | null> {
+  const sb = getSupabase()
+  const { data: ver, error: e1 } = await sb
+    .from('checklist_template_versions')
+    .select('id, versao')
+    .eq('template_id', templateId)
+    .order('versao', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (e1) throw new Error(`Falha ao carregar checklist: ${e1.message}`)
+  if (!ver) return null
+  const { data: items, error: e2 } = await sb
+    .from('checklist_items')
+    .select('label, ordem, obrigatorio')
+    .eq('version_id', ver.id)
+    .order('ordem', { ascending: true })
+  if (e2) throw new Error(`Falha ao carregar itens: ${e2.message}`)
+  return { versionId: ver.id, versao: ver.versao, items: items ?? [] }
+}
+
+/** Salva edição do checklist como NOVA versão (imutável; instâncias antigas intactas). */
+export async function saveNewChecklistVersion(
+  templateId: string,
+  items: ChecklistItemEdit[],
+): Promise<void> {
+  const sb = getSupabase()
+  const { data: maxRow, error: e0 } = await sb
+    .from('checklist_template_versions')
+    .select('versao')
+    .eq('template_id', templateId)
+    .order('versao', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (e0) throw new Error(`Falha ao calcular versão: ${e0.message}`)
+
+  const versao = nextVersionNumber(maxRow?.versao ?? 0)
+  const { data: ver, error: e1 } = await sb
+    .from('checklist_template_versions')
+    .insert({ template_id: templateId, versao })
+    .select('id')
+    .single()
+  if (e1) throw new Error(`Falha ao criar versão: ${e1.message}`)
+
+  if (items.length > 0) {
+    const { error: e2 } = await sb.from('checklist_items').insert(
+      items.map((it, i) => ({ version_id: ver.id, label: it.label, ordem: it.ordem || (i + 1) * 10, obrigatorio: it.obrigatorio })),
+    )
+    if (e2) throw new Error(`Falha ao salvar itens: ${e2.message}`)
+  }
+}
 
 export interface ChecklistCheck {
   checkId: string

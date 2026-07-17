@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
 import { getLatestVersion, listTemplates } from '@/data/repositories/scriptTemplates'
 import { TemplateEditor } from './config/TemplateEditor'
+import { ChecklistEditor, EixosEditor, StagesEditor } from './config/SettingsEditors'
 
 export function ConfigPage() {
   const qc = useQueryClient()
@@ -53,11 +54,34 @@ export function ConfigPage() {
         )}
       </section>
 
-      <section className="space-y-1">
-        <h2 className="text-sm font-semibold text-muted-foreground">Demais parâmetros</h2>
+      <section className="space-y-2">
+        <h2 className="text-sm font-semibold text-muted-foreground">Etapas do pipeline (Kanban)</h2>
         <p className="text-xs text-muted-foreground">
-          Etapas do Kanban, checklists, eixos temáticos, palavras-por-minuto e regra de convidado
-          repetido — edição pela UI em bloco posterior. Já ajustáveis via banco enquanto isso.
+          Adicione, renomeie, reordene, defina cor e “checklist para sair”. Ex.: criar “Revisão”
+          entre Roteirização e Gravado.
+        </p>
+        <StagesEditor />
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="text-sm font-semibold text-muted-foreground">Checklists por etapa</h2>
+        <p className="text-xs text-muted-foreground">
+          Editar itens gera <strong>nova versão</strong>; episódios que já instanciaram o checklist
+          mantêm a versão anterior.
+        </p>
+        <ChecklistEditor />
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="text-sm font-semibold text-muted-foreground">Eixos temáticos</h2>
+        <EixosEditor />
+      </section>
+
+      <section className="space-y-1">
+        <h2 className="text-sm font-semibold text-muted-foreground">Outros parâmetros</h2>
+        <p className="text-xs text-muted-foreground">
+          Palavras-por-minuto, duração-alvo, regra de convidado repetido, links institucionais e
+          dias-parado: ajustáveis via banco (tela dedicada em polimento).
         </p>
       </section>
     </div>

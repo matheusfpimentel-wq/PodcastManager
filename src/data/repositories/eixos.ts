@@ -21,3 +21,12 @@ export async function createEixo(input: TablesInsert<'eixos_tematicos'>): Promis
   if (error) throw new Error(`Falha ao criar eixo: ${error.message}`)
   return data
 }
+
+export async function updateEixo(
+  id: string,
+  patch: import('@/data/database.types').TablesUpdate<'eixos_tematicos'>,
+): Promise<void> {
+  const sb = getSupabase()
+  const { error } = await sb.from('eixos_tematicos').update(patch).eq('id', id)
+  if (error) throw new Error(`Falha ao atualizar eixo: ${error.message}`)
+}
