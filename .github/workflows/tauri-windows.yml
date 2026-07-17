@@ -1,0 +1,50 @@
+name: Build Windows (Tauri)
+
+# Gera o instalador Windows (.exe NSIS + .msi) num runner Windows.
+# Dispare manualmente (workflow_dispatch) ou empurrando uma tag "v*".
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Generate app icons
+        run: npx @tauri-apps/cli icon app-icon.png
+
+      # As VITE_* são chaves PUBLISHABLE (embarcam no bundle do client; o RLS
+      # protege os dados). Pode migrar para secrets do repositório se preferir.
+      - name: Build installer
+        env:
+          VITE_SUPABASE_URL: https://srftodlxkufaraplwdtb.supabase.co
+          VITE_SUPABASE_ANON_KEY: sb_publishable_UZI6qzkaLRzhs23DCLH2RA_95rcsUw8
+        run: npm run tauri build
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: julgados-windows-installer
+          path: |
+            src-tauri/target/release/bundle/nsis/*.exe
+            src-tauri/target/release/bundle/msi/*.msi
+          if-no-files-found: error
