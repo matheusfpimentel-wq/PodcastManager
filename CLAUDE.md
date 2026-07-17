@@ -132,7 +132,8 @@ rodam normalmente.
    "Pessoas" no importador é opcional/sob demanda (ver decisão AT MEMBROS).
 2. **Roteiro:** templates versionados, editor, citações, import/export Markdown,
    PDF, modo gravação. ✅ (schema 0005; editor de template pela UI cria nova versão)
-3. **Comunicação:** modelos, geração em um clique, log, lembretes, tela "Hoje".
+3. **Comunicação:** modelos, geração em um clique, log, lembretes, tela "Hoje". ✅
+   (schema 0006; Modelos 1–4 como skeleton — colar texto oficial pela UI)
 4. **Métricas:** imports de analytics, motor métrica × dimensão, widgets seed,
    exports CSV/PDF, relatório executivo.
 5. **Extras:** divulgação por episódio, cofre (se mantido), polimento, PWA.

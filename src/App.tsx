@@ -9,6 +9,8 @@ import { KanbanPage } from '@/pages/KanbanPage'
 import { EpisodiosPage } from '@/pages/EpisodiosPage'
 import { EpisodioRoteiroPage } from '@/pages/EpisodioRoteiroPage'
 import { ConfigPage } from '@/pages/ConfigPage'
+import { ComunicacaoPage } from '@/pages/ComunicacaoPage'
+import { HojePage } from '@/pages/HojePage'
 
 // Importação carrega SheetJS/PapaParse — code-split para não pesar o bundle inicial.
 const ImportarPage = lazy(() =>
@@ -20,6 +22,7 @@ const NAV = [
   { to: '/kanban', label: 'Produção' },
   { to: '/pessoas', label: 'Pessoas' },
   { to: '/episodios', label: 'Episódios' },
+  { to: '/comunicacao', label: 'Comunicação' },
   { to: '/acervo', label: 'Acervo' },
   { to: '/metricas', label: 'Métricas' },
   { to: '/importar', label: 'Importar' },
@@ -75,11 +78,12 @@ function Shell() {
       <main className="container py-6">
         <Routes>
           <Route path="/" element={<Navigate to="/hoje" replace />} />
-          <Route path="/hoje" element={<Placeholder title="Hoje" />} />
+          <Route path="/hoje" element={<HojePage />} />
           <Route path="/kanban" element={<KanbanPage />} />
           <Route path="/pessoas" element={<PessoasPage />} />
           <Route path="/episodios" element={<EpisodiosPage />} />
           <Route path="/episodios/:id" element={<EpisodioRoteiroPage />} />
+          <Route path="/comunicacao" element={<ComunicacaoPage />} />
           <Route path="/acervo" element={<Placeholder title="Acervo pesquisável" />} />
           <Route path="/metricas" element={<Placeholder title="Métricas" />} />
           <Route

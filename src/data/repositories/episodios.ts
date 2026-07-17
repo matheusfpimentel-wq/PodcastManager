@@ -102,3 +102,91 @@ export async function deleteEpisodio(id: string): Promise<void> {
   const { error } = await sb.from('episodios').delete().eq('id', id)
   if (error) throw new Error(`Falha ao excluir episódio: ${error.message}`)
 }
+
+export interface EpisodeWithDates {
+  id: string
+  numero: number | null
+  titulo: string | null
+  tema: string | null
+  data_gravacao: string | null
+  data_lancamento: string | null
+  stage_id: string | null
+  links: Record<string, unknown>
+}
+
+/** Episódios com datas + etapa — base da tela "Hoje" (lembretes, próximas). */
+export async function listEpisodesWithDates(): Promise<EpisodeWithDates[]> {
+  const sb = getSupabase()
+  const { data, error } = await sb
+    .from('episodios')
+    .select('id, numero, titulo, tema, data_gravacao, data_lancamento, stage_id, links')
+  if (error) throw new Error(`Falha ao carregar episódios: ${error.message}`)
+  return ((data ?? []) as Array<Omit<EpisodeWithDates, 'links'> & { links: unknown }>).map((e) => ({
+    ...e,
+    links: (e.links && typeof e.links === 'object' ? e.links : {}) as Record<string, unknown>,
+  }))
+}
+
+export interface EpisodioContext {
+  id: string
+  numero: number | null
+  titulo: string | null
+  tema: string | null
+  data_gravacao: string | null
+  data_lancamento: string | null
+  links: Record<string, unknown>
+}
+
+/** Dados do episódio para montar mensagens/lembretes. */
+export async function getEpisodioContext(id: string): Promise<EpisodioContext | null> {
+  const sb = getSupabase()
+  const { data, error } = await sb
+    .from('episodios')
+    .select('id, numero, titulo, tema, data_gravacao, data_lancamento, links')
+    .eq('id', id)
+    .maybeSingle()
+  if (error) throw new Error(`Falha ao carregar episódio: ${error.message}`)
+  if (!data) return null
+  return {
+    ...data,
+    links: (data.links && typeof data.links === 'object' ? data.links : {}) as Record<string, unknown>,
+  }
+}
+
+export interface EpisodePessoa {
+  pessoa_id: string
+  papel: string
+  nome: string
+  tratamento: string | null
+  cargo_atual: string | null
+  comarca_lotacao: string | null
+  email: string | null
+  telefone: string | null
+  instagram: string | null
+}
+
+/** Pessoas vinculadas a um episódio (com papel) — para o gerador de mensagens. */
+export async function listEpisodePessoas(episodeId: string): Promise<EpisodePessoa[]> {
+  const sb = getSupabase()
+  const { data, error } = await sb
+    .from('episodio_pessoas')
+    .select('papel, pessoa_id, pessoas(nome, tratamento, cargo_atual, comarca_lotacao, email, telefone, instagram)')
+    .eq('episodio_id', episodeId)
+  if (error) throw new Error(`Falha ao carregar convidados: ${error.message}`)
+  type Row = {
+    papel: string
+    pessoa_id: string
+    pessoas: {
+      nome: string
+      tratamento: string | null
+      cargo_atual: string | null
+      comarca_lotacao: string | null
+      email: string | null
+      telefone: string | null
+      instagram: string | null
+    } | null
+  }
+  return ((data ?? []) as Row[])
+    .filter((r) => r.pessoas)
+    .map((r) => ({ pessoa_id: r.pessoa_id, papel: r.papel, ...r.pessoas! }))
+}

@@ -164,6 +164,61 @@ export type Database = {
           },
         ]
       }
+      communication_log: {
+        Row: {
+          assunto: string | null
+          canal: string | null
+          conteudo_renderizado: string | null
+          enviado_em: string
+          episodio_id: string | null
+          id: string
+          pessoa_id: string | null
+          template_id: string | null
+        }
+        Insert: {
+          assunto?: string | null
+          canal?: string | null
+          conteudo_renderizado?: string | null
+          enviado_em?: string
+          episodio_id?: string | null
+          id?: string
+          pessoa_id?: string | null
+          template_id?: string | null
+        }
+        Update: {
+          assunto?: string | null
+          canal?: string | null
+          conteudo_renderizado?: string | null
+          enviado_em?: string
+          episodio_id?: string | null
+          id?: string
+          pessoa_id?: string | null
+          template_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "communication_log_episodio_id_fkey"
+            columns: ["episodio_id"]
+            isOneToOne: false
+            referencedRelation: "episodios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communication_log_pessoa_id_fkey"
+            columns: ["pessoa_id"]
+            isOneToOne: false
+            referencedRelation: "pessoas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "communication_log_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "message_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       eixos_tematicos: {
         Row: {
           ativo: boolean
@@ -501,6 +556,45 @@ export type Database = {
         }
         Relationships: []
       }
+      message_templates: {
+        Row: {
+          assunto: string | null
+          ativo: boolean
+          canal: string
+          corpo: string
+          created_at: string
+          id: string
+          nome: string
+          ordem: number
+          regra_lembrete: Json | null
+          updated_at: string
+        }
+        Insert: {
+          assunto?: string | null
+          ativo?: boolean
+          canal?: string
+          corpo?: string
+          created_at?: string
+          id?: string
+          nome: string
+          ordem?: number
+          regra_lembrete?: Json | null
+          updated_at?: string
+        }
+        Update: {
+          assunto?: string | null
+          ativo?: boolean
+          canal?: string
+          corpo?: string
+          created_at?: string
+          id?: string
+          nome?: string
+          ordem?: number
+          regra_lembrete?: Json | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pessoas: {
         Row: {
           anonimizada: boolean
@@ -706,6 +800,73 @@ export type Database = {
             columns: ["stage_id"]
             isOneToOne: false
             referencedRelation: "pipeline_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          concluida: boolean
+          concluida_em: string | null
+          created_at: string
+          descricao: string | null
+          episodio_id: string | null
+          id: string
+          origem: string
+          pessoa_id: string | null
+          template_id: string | null
+          titulo: string
+          updated_at: string
+          vence_em: string | null
+        }
+        Insert: {
+          concluida?: boolean
+          concluida_em?: string | null
+          created_at?: string
+          descricao?: string | null
+          episodio_id?: string | null
+          id?: string
+          origem?: string
+          pessoa_id?: string | null
+          template_id?: string | null
+          titulo: string
+          updated_at?: string
+          vence_em?: string | null
+        }
+        Update: {
+          concluida?: boolean
+          concluida_em?: string | null
+          created_at?: string
+          descricao?: string | null
+          episodio_id?: string | null
+          id?: string
+          origem?: string
+          pessoa_id?: string | null
+          template_id?: string | null
+          titulo?: string
+          updated_at?: string
+          vence_em?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_episodio_id_fkey"
+            columns: ["episodio_id"]
+            isOneToOne: false
+            referencedRelation: "episodios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_pessoa_id_fkey"
+            columns: ["pessoa_id"]
+            isOneToOne: false
+            referencedRelation: "pessoas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "message_templates"
             referencedColumns: ["id"]
           },
         ]
