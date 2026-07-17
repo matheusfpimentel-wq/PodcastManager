@@ -1,11 +1,18 @@
 name: Build Windows (Tauri)
 
 # Gera o instalador Windows (.exe NSIS + .msi) num runner Windows.
-# Dispare manualmente (workflow_dispatch) ou empurrando uma tag "v*".
+# Dispara: manualmente (workflow_dispatch), por tag "v*", ou em PRs que mexem
+# no empacotamento desktop (para validar o build antes do merge).
 on:
   workflow_dispatch:
   push:
     tags: ['v*']
+  pull_request:
+    paths:
+      - 'src-tauri/**'
+      - '.github/workflows/tauri-windows.yml'
+      - 'package.json'
+      - 'package-lock.json'
 
 jobs:
   build-windows:
