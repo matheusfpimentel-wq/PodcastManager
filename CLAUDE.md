@@ -118,9 +118,9 @@ rodam normalmente.
 ## Testes mínimos obrigatórios (§9 do brief)
 
 1. Renderização de variáveis de mensagem, **incluindo variável ausente** ✅ (`renderTemplate.test.ts`)
-2. Parser Markdown↔template do roteiro (**round-trip**) — fase 2
+2. Parser Markdown↔template do roteiro (**round-trip**) ✅ (`markdown.test.ts`)
 3. Mapeamento e **deduplicação** de import ✅ (`planImport.test.ts` + `coerce.test.ts`)
-4. **Imutabilidade** de versões de template frente a edições — fase 2
+4. **Imutabilidade** de versões de template frente a edições ✅ (`version.test.ts`)
 
 ## Fases de entrega (cada fase termina utilizável)
 
@@ -131,7 +131,7 @@ rodam normalmente.
    `julgados-e-comentados`, sa-east-1). Falta: conteúdo real (§9). Preset
    "Pessoas" no importador é opcional/sob demanda (ver decisão AT MEMBROS).
 2. **Roteiro:** templates versionados, editor, citações, import/export Markdown,
-   PDF, modo gravação.
+   PDF, modo gravação. ✅ (schema 0005; editor de template pela UI cria nova versão)
 3. **Comunicação:** modelos, geração em um clique, log, lembretes, tela "Hoje".
 4. **Métricas:** imports de analytics, motor métrica × dimensão, widgets seed,
    exports CSV/PDF, relatório executivo.
