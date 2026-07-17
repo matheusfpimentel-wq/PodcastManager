@@ -337,6 +337,44 @@ export type Database = {
           },
         ]
       }
+      episode_metrics: {
+        Row: {
+          created_at: string
+          data_referencia: string
+          episodio_id: string
+          id: string
+          outras: Json
+          plataforma: string
+          plays: number | null
+        }
+        Insert: {
+          created_at?: string
+          data_referencia: string
+          episodio_id: string
+          id?: string
+          outras?: Json
+          plataforma?: string
+          plays?: number | null
+        }
+        Update: {
+          created_at?: string
+          data_referencia?: string
+          episodio_id?: string
+          id?: string
+          outras?: Json
+          plataforma?: string
+          plays?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episode_metrics_episodio_id_fkey"
+            columns: ["episodio_id"]
+            isOneToOne: false
+            referencedRelation: "episodios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       episode_script_revisions: {
         Row: {
           conteudo: Json
@@ -594,6 +632,38 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      metric_imports: {
+        Row: {
+          arquivo_nome: string | null
+          id: string
+          importado_em: string
+          preset_id: string | null
+          resumo: Json
+        }
+        Insert: {
+          arquivo_nome?: string | null
+          id?: string
+          importado_em?: string
+          preset_id?: string | null
+          resumo?: Json
+        }
+        Update: {
+          arquivo_nome?: string | null
+          id?: string
+          importado_em?: string
+          preset_id?: string | null
+          resumo?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "metric_imports_preset_id_fkey"
+            columns: ["preset_id"]
+            isOneToOne: false
+            referencedRelation: "import_presets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pessoas: {
         Row: {

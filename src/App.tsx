@@ -12,9 +12,12 @@ import { ConfigPage } from '@/pages/ConfigPage'
 import { ComunicacaoPage } from '@/pages/ComunicacaoPage'
 import { HojePage } from '@/pages/HojePage'
 
-// Importação carrega SheetJS/PapaParse — code-split para não pesar o bundle inicial.
+// Importação (SheetJS) e Métricas (Recharts) são pesadas — code-split.
 const ImportarPage = lazy(() =>
   import('@/pages/ImportarPage').then((m) => ({ default: m.ImportarPage })),
+)
+const MetricasPage = lazy(() =>
+  import('@/pages/MetricasPage').then((m) => ({ default: m.MetricasPage })),
 )
 
 const NAV = [
@@ -85,7 +88,14 @@ function Shell() {
           <Route path="/episodios/:id" element={<EpisodioRoteiroPage />} />
           <Route path="/comunicacao" element={<ComunicacaoPage />} />
           <Route path="/acervo" element={<Placeholder title="Acervo pesquisável" />} />
-          <Route path="/metricas" element={<Placeholder title="Métricas" />} />
+          <Route
+            path="/metricas"
+            element={
+              <Suspense fallback={<p className="text-sm text-muted-foreground">Carregando métricas…</p>}>
+                <MetricasPage />
+              </Suspense>
+            }
+          />
           <Route
             path="/importar"
             element={

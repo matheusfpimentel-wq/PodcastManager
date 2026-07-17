@@ -14,8 +14,13 @@ export const TARGET_FIELDS: Record<string, TargetField[]> = {
     { key: 'duracao_seg', label: 'Duração (segundos)', type: 'int' },
     { key: 'notas', label: 'Notas' },
   ],
-  // 'spotify' (métricas) e 'at_membros' (client-side/LGPD) entram nas fases 4 e 1.2.
+  spotify: [
+    { key: 'numero', label: 'Número do episódio', type: 'int' },
+    { key: 'data_referencia', label: 'Data de referência', type: 'date' },
+    { key: 'plays', label: 'Plays / Streams', type: 'int' },
+  ],
+  // 'at_membros' (client-side/LGPD) fora de escopo (decisão AT MEMBROS).
 }
 
 /** Tipos cujo "aplicar" já está implementado (upsert no banco). */
-export const APPLY_SUPPORTED = new Set(['controle'])
+export const APPLY_SUPPORTED = new Set(['controle', 'spotify'])

@@ -9,6 +9,7 @@ import {
   applyControleImport,
   fetchExistingEpisodios,
 } from '@/data/repositories/importControle'
+import { applySpotifyImport } from '@/data/repositories/importSpotify'
 import { APPLY_SUPPORTED, TARGET_FIELDS } from '@/data/importTargets'
 import type { ImportPreset } from '@/data/types'
 import type { MappedRecord } from '@/domain/import/planImport'
@@ -38,11 +39,12 @@ export function ImportarPage() {
   const fields = preset ? (TARGET_FIELDS[preset.tipo] ?? []) : []
   const applySupported = preset ? APPLY_SUPPORTED.has(preset.tipo) : false
 
-  // Registros existentes p/ detectar update vs create (só 'controle' por ora).
+  // Registros existentes p/ detectar update vs create (só 'controle').
+  // 'spotify' faz upsert idempotente no banco, então dispensa cross-ref aqui.
   const existing = useQuery({
     queryKey: ['existing-episodios'],
     queryFn: () => fetchExistingEpisodios(),
-    enabled: applySupported,
+    enabled: preset?.tipo === 'controle',
   })
 
   function selectPreset(p: ImportPreset) {
@@ -91,7 +93,10 @@ export function ImportarPage() {
   const apply = useMutation({
     mutationFn: async () => {
       if (!plan || !preset) throw new Error('Nada para aplicar')
-      const report = await applyControleImport(plan, fields)
+      const report =
+        preset.tipo === 'spotify'
+          ? await applySpotifyImport(plan, fields)
+          : await applyControleImport(plan, fields)
       // memoriza o mapeamento no preset para a próxima importação
       await savePresetMapping(preset.id, cleanMapping, dedupKeys)
       return report
@@ -100,6 +105,7 @@ export function ImportarPage() {
       qc.invalidateQueries({ queryKey: ['existing-episodios'] })
       qc.invalidateQueries({ queryKey: ['board'] })
       qc.invalidateQueries({ queryKey: ['import-presets'] })
+      qc.invalidateQueries({ queryKey: ['metrics'] })
     },
   })
 
