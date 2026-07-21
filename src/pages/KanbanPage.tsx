@@ -1,4 +1,5 @@
 import { useMemo, useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   DndContext,
   PointerSensor,
@@ -27,11 +28,13 @@ import { ChecklistDrawer } from './kanban/ChecklistDrawer'
 function EpisodeCard({
   ep,
   progress,
-  onOpen,
+  onOpenEpisode,
+  onOpenChecklist,
 }: {
   ep: BoardEpisode
   progress?: StageProgress
-  onOpen: () => void
+  onOpenEpisode: () => void
+  onOpenChecklist: () => void
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({ id: ep.id })
   const style = transform
@@ -48,7 +51,8 @@ function EpisodeCard({
       }`}
       {...listeners}
       {...attributes}
-      onClick={onOpen}
+      onClick={onOpenEpisode}
+      title="Abrir episódio"
     >
       <div className="flex items-start justify-between gap-2">
         <span className="text-sm font-medium leading-tight">{titulo}</span>
@@ -68,12 +72,19 @@ function EpisodeCard({
           </span>
         )}
         {progress && progress.total > 0 && (
-          <Badge
-            variant={progress.done === progress.total ? 'secondary' : 'outline'}
+          <button
+            type="button"
             className="ml-auto"
+            title="Abrir checklist da etapa"
+            onClick={(e) => {
+              e.stopPropagation()
+              onOpenChecklist()
+            }}
           >
-            ✓ {progress.done}/{progress.total}
-          </Badge>
+            <Badge variant={progress.done === progress.total ? 'secondary' : 'outline'}>
+              ✓ {progress.done}/{progress.total}
+            </Badge>
+          </button>
         )}
       </div>
     </div>
@@ -84,16 +95,18 @@ function Column({
   stage,
   episodes,
   progressMap,
-  onOpen,
+  onOpenEpisode,
+  onOpenChecklist,
 }: {
   stage: PipelineStage
   episodes: BoardEpisode[]
   progressMap: Record<string, StageProgress>
-  onOpen: (ep: BoardEpisode) => void
+  onOpenEpisode: (ep: BoardEpisode) => void
+  onOpenChecklist: (ep: BoardEpisode) => void
 }) {
   const { setNodeRef, isOver } = useDroppable({ id: stage.id })
   return (
-    <div className="flex w-72 shrink-0 flex-col">
+    <div className="flex w-full shrink-0 flex-col md:w-72">
       <div className="mb-2 flex items-center gap-2 px-1">
         <span className="h-3 w-3 rounded-full" style={{ background: stage.cor ?? '#94a3b8' }} />
         <h2 className="text-sm font-semibold">{stage.nome}</h2>
@@ -115,7 +128,8 @@ function Column({
             key={ep.id}
             ep={ep}
             progress={progressMap[`${ep.id}:${ep.stage_id}`]}
-            onOpen={() => onOpen(ep)}
+            onOpenEpisode={() => onOpenEpisode(ep)}
+            onOpenChecklist={() => onOpenChecklist(ep)}
           />
         ))}
         {episodes.length === 0 && (
@@ -128,6 +142,7 @@ function Column({
 
 export function KanbanPage() {
   const qc = useQueryClient()
+  const navigate = useNavigate()
   const [novaOpen, setNovaOpen] = useState(false)
   const [tema, setTema] = useState('')
   const [drawer, setDrawer] = useState<{ ep: BoardEpisode; stage: PipelineStage } | null>(null)
@@ -206,14 +221,15 @@ export function KanbanPage() {
       </div>
 
       <DndContext sensors={sensors} onDragEnd={onDragEnd}>
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex flex-col gap-4 pb-4 md:flex-row md:overflow-x-auto">
           {(stages.data ?? []).map((stage) => (
             <Column
               key={stage.id}
               stage={stage}
               episodes={byStage.get(stage.id) ?? []}
               progressMap={progress.data ?? {}}
-              onOpen={(ep) => setDrawer({ ep, stage })}
+              onOpenEpisode={(ep) => navigate(`/episodios/${ep.id}`)}
+              onOpenChecklist={(ep) => setDrawer({ ep, stage })}
             />
           ))}
         </div>

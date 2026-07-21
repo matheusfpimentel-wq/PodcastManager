@@ -28,6 +28,18 @@ describe('parseDateLoose', () => {
     expect(parseDateLoose('não é data')).toBeNull()
     expect(parseDateLoose('')).toBeNull()
   })
+  it('converte serial do Excel (número e string numérica)', () => {
+    // 45000 ≈ 2023-03-15 (época 1899-12-30)
+    expect(parseDateLoose(45000)?.toISOString().slice(0, 10)).toBe('2023-03-15')
+    expect(parseDateLoose('45000')?.toISOString().slice(0, 10)).toBe('2023-03-15')
+  })
+  it('rejeita datas com ano implausível (bug +043738)', () => {
+    // "43738" que o JS leria como ANO 43738 → serial válido (≈2019), não quebra
+    expect(parseDateLoose('43738')?.toISOString().slice(0, 4)).toBe('2019')
+    // valores absurdos → null (não estouram o Postgres)
+    expect(parseDateLoose('9999999')).toBeNull() // serial fora do range
+    expect(parseDateLoose(new Date('+043738-01-01T03:00:00Z'))).toBeNull() // ano implausível
+  })
 })
 
 describe('coerceValue', () => {

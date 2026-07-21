@@ -11,7 +11,7 @@
  * keys within a single file collapse to the first occurrence.
  */
 
-export type CellValue = string | number | boolean | null | undefined
+export type CellValue = string | number | boolean | Date | null | undefined
 export type RawRow = Record<string, CellValue>
 export type MappedRecord = Record<string, CellValue>
 

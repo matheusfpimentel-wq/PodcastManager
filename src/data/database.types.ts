@@ -484,6 +484,35 @@ export type Database = {
           },
         ]
       }
+      episode_transcricao: {
+        Row: {
+          arquivo_nome: string | null
+          conteudo: string
+          episodio_id: string
+          updated_at: string
+        }
+        Insert: {
+          arquivo_nome?: string | null
+          conteudo?: string
+          episodio_id: string
+          updated_at?: string
+        }
+        Update: {
+          arquivo_nome?: string | null
+          conteudo?: string
+          episodio_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episode_transcricao_episodio_id_fkey"
+            columns: ["episodio_id"]
+            isOneToOne: true
+            referencedRelation: "episodios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       episodio_pessoas: {
         Row: {
           created_at: string
