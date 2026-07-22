@@ -13,7 +13,7 @@ export async function applySpotifyImport(
   fields: TargetField[],
 ): Promise<ApplyReport> {
   const sb = getSupabase()
-  const report: ApplyReport = { criados: 0, atualizados: 0, erros: [] }
+  const report: ApplyReport = { criados: 0, atualizados: 0, convidados: 0, erros: [] }
 
   // mapa numero→id
   const { data: eps, error: epErr } = await sb.from('episodios').select('id, numero').not('numero', 'is', null)

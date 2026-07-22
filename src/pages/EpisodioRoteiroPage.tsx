@@ -29,6 +29,7 @@ import { CitacoesTab } from './roteiro/CitacoesTab'
 import { RecordingMode } from './roteiro/RecordingMode'
 import { DadosTab } from './episodio/DadosTab'
 import { DivulgacaoTab } from './episodio/DivulgacaoTab'
+import { TranscricaoTab } from './episodio/TranscricaoTab'
 
 function fmtTempo(seg: number): string {
   const m = Math.floor(seg / 60)
@@ -313,7 +314,9 @@ function EditorRoteiro({
 export function EpisodioRoteiroPage() {
   const { id = '' } = useParams()
   const qc = useQueryClient()
-  const [tab, setTab] = useState<'dados' | 'roteiro' | 'citacoes' | 'divulgacao'>('roteiro')
+  const [tab, setTab] = useState<'dados' | 'roteiro' | 'citacoes' | 'divulgacao' | 'transcricao'>(
+    'roteiro',
+  )
 
   const header = useQuery({ queryKey: ['episodio-header', id], queryFn: () => getEpisodioHeader(id) })
   const script = useQuery({ queryKey: ['episode-script', id], queryFn: () => getEpisodeScript(id) })
@@ -367,12 +370,17 @@ export function EpisodioRoteiroPage() {
         <Button variant={tab === 'divulgacao' ? 'default' : 'ghost'} size="sm" onClick={() => setTab('divulgacao')}>
           Divulgação
         </Button>
+        <Button variant={tab === 'transcricao' ? 'default' : 'ghost'} size="sm" onClick={() => setTab('transcricao')}>
+          Transcrição
+        </Button>
       </div>
 
       {tab === 'dados' ? (
         <DadosTab episodeId={id} />
       ) : tab === 'divulgacao' ? (
         <DivulgacaoTab episodeId={id} />
+      ) : tab === 'transcricao' ? (
+        <TranscricaoTab episodeId={id} />
       ) : tab === 'citacoes' ? (
         <CitacoesTab episodeId={id} />
       ) : script.isLoading ? (

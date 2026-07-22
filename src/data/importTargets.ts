@@ -7,11 +7,12 @@ import type { TargetField } from '@/domain/import/coerce'
 export const TARGET_FIELDS: Record<string, TargetField[]> = {
   controle: [
     { key: 'numero', label: 'Número do episódio', type: 'int' },
-    { key: 'titulo', label: 'Título' },
     { key: 'tema', label: 'Tema' },
+    { key: 'convidado', label: 'Convidado (nome)' },
     { key: 'data_gravacao', label: 'Data de gravação', type: 'timestamp' },
     { key: 'data_lancamento', label: 'Data de lançamento', type: 'date' },
     { key: 'duracao_seg', label: 'Duração (segundos)', type: 'int' },
+    { key: 'titulo', label: 'Título (opcional)' },
     { key: 'notas', label: 'Notas' },
   ],
   spotify: [

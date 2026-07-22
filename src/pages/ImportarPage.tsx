@@ -240,7 +240,8 @@ export function ImportarPage() {
           {apply.data && (
             <div className="rounded-md border border-green-500/40 bg-green-500/5 p-3 text-sm">
               <p className="font-medium text-green-700 dark:text-green-400">
-                Importado: {apply.data.criados} criado(s), {apply.data.atualizados} atualizado(s).
+                Importado: {apply.data.criados} criado(s), {apply.data.atualizados} atualizado(s)
+                {apply.data.convidados > 0 ? `, ${apply.data.convidados} convidado(s) vinculado(s)` : ''}.
               </p>
               {apply.data.erros.length > 0 && (
                 <ul className="mt-1 list-disc pl-5 text-destructive">

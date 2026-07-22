@@ -24,8 +24,8 @@ const MetricasPage = lazy(() =>
 const NAV = [
   { to: '/hoje', label: 'Hoje' },
   { to: '/kanban', label: 'Produção' },
-  { to: '/pessoas', label: 'Pessoas' },
   { to: '/episodios', label: 'Episódios' },
+  { to: '/pessoas', label: 'Pessoas' },
   { to: '/comunicacao', label: 'Comunicação' },
   { to: '/acervo', label: 'Acervo' },
   { to: '/metricas', label: 'Métricas' },
