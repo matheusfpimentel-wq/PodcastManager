@@ -1,6 +1,6 @@
 [package]
 name = "julgados-e-comentados"
-version = "0.1.0"
+version = "0.1.1"
 description = "Gestão de produção do podcast Julgados e Comentados (ESMP-PR/MPPR)"
 authors = ["MPPR"]
 edition = "2021"
